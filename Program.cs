@@ -38,13 +38,13 @@ namespace formatif2_sol
             double moyenneGroupe = 0.0;
             int note = 1;
             Console.WriteLine("Entrer les résultats, résultat négatif pour arrêter");
-            while (note > 0)
+            while (note >= 0)
             {
                 // 4.2
                 // Remplacer les 2 prochaine ligne par la méthode de saisie
-                Console.WriteLine("Entrer une note :");
-                int.TryParse(Console.ReadLine(), out note);
-                //
+                //Console.WriteLine("Entrer une note :");
+                //int.TryParse(Console.ReadLine(), out note);
+                note = SaisirNote();
                 if (note >= 0)
                 {
                     nbEtudiant++;
@@ -132,9 +132,9 @@ namespace formatif2_sol
         static double CalculerMoyenne(double[] tabPrixEssence)
         {
             double moyenne = 0;
-            for (int i = 0; i < tabPrixEssence.Length; i++)
+            foreach (double prix in tabPrixEssence)
             {
-                moyenne += tabPrixEssence[i];
+                moyenne += prix;
             }
 
             moyenne /= tabPrixEssence.Length;
@@ -151,14 +151,46 @@ namespace formatif2_sol
         {
             double moyenne = CalculerMoyenne(tabPrixEssence);
             int frequence = 0;
-            foreach (double prix in tabPrixEssence)
+            for (int i = 0; i < tabPrixEssence.Length; i++)
             {
-                if (prix < moyenne)
+                if (tabPrixEssence[i] < moyenne)
                 {
                     frequence++;
                 }
             }
             return frequence;
+        }
+        /*
+        * Saisir une note entière plus petite que 101
+        *
+        * @return une note entière plus petite que 101
+        */
+        static int SaisirNote()
+        {
+            int note = 0;
+            bool continuer = true;
+            bool noteValide = false;
+            while (continuer)
+            {
+                Console.WriteLine("Entrer une note :");
+                noteValide = int.TryParse(Console.ReadLine(), out note);
+                if (noteValide)
+                {
+                    if (note > 100)
+                    {
+                        Console.WriteLine("Le résultat saisi doit être inférieur ou égal à 100");
+                    }
+                    else
+                    {
+                        continuer = false;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Le résultat saisi est invalide, recommencez!");
+                }
+            }
+            return note;
         }
     }
 }
